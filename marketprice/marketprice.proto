@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.github.hypoballad.bitprice.marketprice";
+option java_outer_classname = "marketprice";
+
+package marketprice;
+
+// Bitcoin Price API
+service MarketPrice {
+    // You can get the btc_usd market price.
+    rpc BtcUsd(TimeParam) returns (PriceResp) {}
+    // You can get the btc_jpy market price.
+    rpc BtcJpy(TimeParam) returns (PriceResp) {}
+    // You can get the btc_usd price array.
+    rpc BtcUsdArray(TimeRange) returns (PriceArray) {}
+    // You can get the btc_jpy price array.
+    rpc BtcJpyArray(TimeRange) returns (PriceArray) {}
+}
+
+message TimeParam {
+    int64 uts = 1; // The unix timestamp
+}
+
+message TimeRange {
+    int64 start = 1; // the start unix timestamp
+    int64 end = 2;   // the end unix timestamp
+}
+
+message PriceResp {
+    string code = 1;     // currency code (USD or JPY)
+    int64 uts = 2;       // timestamp sec
+    float price = 3;     // price
+    string provider = 4; // provider
+}
+
+message PriceArray {
+    repeated PriceResp items = 1;
+}
